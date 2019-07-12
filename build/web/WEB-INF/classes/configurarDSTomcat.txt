@@ -1,0 +1,17 @@
+CONFIGURAR DATASOURCE EN TOMCAT
+
+1. COLOCARLO EN EL SERVER.XML
+
+<Resource auth="Container" driverClassName="com.mysql.jdbc.Driver"
+	initialSize="5" maxActive="120" maxWait="5000" name="spring.hibernate"
+	password="admin" poolPreparedStatements="true" type="javax.sql.DataSource"
+	url="jdbc:mysql://localhost/spring-hibernate" username="root" />
+
+
+2. COLOCARLO EN EL CONTEXT.XML
+
+<ResourceLink name="spring.hibernate" global="spring.hibernate"
+	type="javax.sql.DataSource" />
+	
+
+3. COPIAR EL DRIVER DE CONEXION EN LA CARPETA LIB DEL TOMCAT	

@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context-4.0.xsd
+						http://www.springframework.org/schema/tx
+        				http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+        				http://www.springframework.org/schema/aop 
+                        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
+	<bean id="txManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="obtener*" read-only="true" propagation="REQUIRED" />
+			<tx:method name="listar*" read-only="true" propagation="REQUIRED" />
+			<tx:method name="registrar*" read-only="false" propagation="REQUIRED"
+				rollback-for="Throwable" />
+			<tx:method name="actualizar*" read-only="false"
+				propagation="REQUIRED" rollback-for="Throwable" />
+			<tx:method name="eliminar*" read-only="false" propagation="REQUIRED"
+				rollback-for="Throwable" />
+		</tx:attributes>
+
+	</tx:advice>
+
+	<aop:config>
+		<aop:advisor pointcut="execution(* com.cjavaperu.mvc.service.*Service*.*(..))"
+			advice-ref="txAdvice" />
+	</aop:config>
+
+</beans>
